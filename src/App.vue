@@ -3,7 +3,7 @@
     <!-- 顶部搜索栏 -->
     <header class="header">
       <div class="header-inner">
-        <div class="logo">人才招聘</div>
+        <div class="logo">人才招聘v1</div>
         <div class="search-box">
           <input
             v-model.trim="keyword"
