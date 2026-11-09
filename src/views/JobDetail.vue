@@ -335,7 +335,7 @@ const getLogoColor = (name: string) => {
 }
 .contact-box p:last-child { margin-bottom: 0; }
 
-/* ================= 兜底空状态 ================= */
+/* ================= 兜底空状态 =========== */
 .not-found {
   min-height: 100vh;
   display: flex;
