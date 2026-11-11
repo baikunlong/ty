@@ -18,7 +18,7 @@
     <main class="main-content">
       <div class="detail-wrapper">
         <!-- 返回按钮 -->
-        <router-link to="/" class="back-link">
+        <router-link to="/JobList" class="back-link">
           <span class="arrow">&lt;</span> 返回岗位列表
         </router-link>
 
