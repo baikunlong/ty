@@ -7,15 +7,15 @@
         <div class="nav-inner">
           <div class="nav-logo">国际物流产教融合数据平台</div>
           <div class="nav-links">
-            <router-link to="/" class="active">供需大厅</router-link>
-            <router-link to="/companies">企业汇总</router-link>
+            <router-link to="/JobList" class="active">供需大厅</router-link>
+            <router-link to="/">企业汇总</router-link>
           </div>
         </div>
       </div>
 
       <div class="banner-content">
         <div class="sub-title">MODERN LOGISTICS TALENT PLATFORM</div>
-        <h1 class="main-title">供需对接与招聘信息服务平台</h1>
+        <h1 class="main-title">供需对接信息服务平台</h1>
         <p class="desc">服务物流、跨境电商与关务机构解决人才需求，构建产教融合协同服务枢纽</p>
         
         <div class="search-wrapper">

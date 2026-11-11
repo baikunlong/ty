@@ -7,8 +7,8 @@
         <div class="nav-inner">
           <div class="nav-logo">国际物流产教融合数据平台</div>
           <div class="nav-links">
-            <router-link to="/">供需大厅</router-link>
-            <router-link to="/companies" class="active">企业汇总</router-link>
+            <router-link to="/JobList">供需大厅</router-link>
+            <router-link to="/" class="active">企业汇总</router-link>
           </div>
         </div>
       </div>

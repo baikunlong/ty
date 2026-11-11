@@ -7,10 +7,10 @@ import CompanyDetail from '../views/CompanyDetail.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
-    { path: '/', name: 'JobList', component: JobList },
+    { path: '/', name: 'CompanyList', component: CompanyList },
+    { path: '/company/:name', name: 'CompanyDetail', component: CompanyDetail },
+    { path: '/JobList', name: 'JobList', component: JobList },
     { path: '/job/:id', name: 'JobDetail', component: JobDetail },
-    { path: '/companies', name: 'CompanyList', component: CompanyList },
-    { path: '/company/:name', name: 'CompanyDetail', component: CompanyDetail } 
   ]
 })
 
