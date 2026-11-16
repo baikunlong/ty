@@ -46,7 +46,7 @@
         </div>
         <div class="stat-box">
           <div class="stat-num">{{ stats.graduates }}<span>人</span></div>
-          <div class="stat-label">2027届可供生源</div>
+          <div class="stat-label">2026年学校可供人才</div>
         </div>
         <div class="stat-box">
           <div class="stat-num">{{ stats.jobs }}<span>条</span></div>
