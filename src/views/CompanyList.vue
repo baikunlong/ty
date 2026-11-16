@@ -1,27 +1,28 @@
 <template>
   <div class="page-container">
-    <!-- 顶部 Banner 与 导航栏 -->
-    <header class="banner-header">
-      <div class="bg-grid"></div>
-      <div class="top-nav">
-        <div class="nav-inner">
-          <div class="nav-logo">国际物流产教融合数据平台</div>
-          <div class="nav-links">
-            <router-link to="/JobList">供需大厅</router-link>
-            <router-link to="/" class="active">企业汇总</router-link>
-          </div>
+    <!-- 顶部导航栏 (统一风格) -->
+    <header class="top-header">
+      <div class="header-inner">
+        <!-- 点击 Logo 回到首页 -->
+        <div class="logo-area" @click="$router.push('/')" style="cursor: pointer;">
+          <img :src="schoolLogo" alt="重庆城市管理职业大学" class="school-logo" />
+          <span class="divider">|</span>
+          <span class="platform-name">西部陆海新通道沿线产教供需对接平台</span>
         </div>
-      </div>
-      
-      <div class="banner-content">
-        <h1 class="main-title">合作企业汇总</h1>
-        <p class="desc">汇聚优质企业，助力精准就业</p>
-        <!-- <p class="desc">汇聚优质企业，助力精准就业（共 {{ companies.length }} 家企业）</p> -->
+        <nav class="nav-links">
+          <router-link to="/">返回首页</router-link>
+        </nav>
       </div>
     </header>
 
     <!-- 主体内容区 -->
     <main class="main-content">
+      <!-- 页面标题区 -->
+      <div class="page-title-bar">
+        <h1 class="page-title">合作企业汇总</h1>
+        <p class="page-subtitle">汇聚优质企业，助力精准就业</p>
+      </div>
+
       <div class="empty-tip" v-if="companies.length === 0">
         暂无企业信息
       </div>
@@ -86,6 +87,23 @@
         />
       </div>
     </main>
+
+    <!-- 底部 (统一风格) -->
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <div class="footer-left">
+          <img :src="schoolLogo" alt="重庆城市管理职业大学" class="footer-logo" />
+          <span class="footer-school-name">重庆城市管理职业大学</span>
+        </div>
+        <div class="footer-right">
+          <p>主办：重庆城市管理职业大学 · 产教融合项目组</p>
+          <p>平台定位：西部陆海新通道沿线产教供需枢纽</p>
+        </div>
+      </div>
+      <div class="footer-copyright">
+        © 2026 西部陆海新通道沿线产教供需对接平台
+      </div>
+    </footer>
   </div>
 </template>
 
@@ -93,10 +111,12 @@
 import { ref, computed, reactive } from 'vue'
 import { useRouter } from 'vue-router'
 import jobData from '../data/jobData.json'
+// 引入学校 Logo
+import schoolLogo from '../assets/logoB.png'
 
 const router = useRouter()
 const currentPage = ref(1)
-const pageSize = 16 
+const pageSize = 15 
 
 // 记录图片加载失败的 Map
 const imgErrorMap = reactive<Record<string, boolean>>({})
@@ -178,82 +198,76 @@ const getLogoColor = (name: string) => {
   background-color: #f4f5f7;
   display: flex;
   flex-direction: column;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
-/* ================= 头部 ================= */
-.banner-header {
-  width: 100%;
-  background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+/* ================= 顶部导航 ================= */
+.top-header {
+  background: #0b1120;
   color: white;
-  position: relative;
-  overflow: hidden;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  height: 64px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
   flex-shrink: 0;
-  padding-bottom: 40px;
 }
-
-.bg-grid {
-  position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background-size: 40px 40px;
-  background-image: 
-    linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
-  mask-image: radial-gradient(circle at center, black 40%, transparent 80%);
-  -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 80%);
-  pointer-events: none;
-}
-
-.top-nav {
-  position: relative;
-  z-index: 2;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  background: rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(8px);
-  margin-bottom: 40px;
-}
-
-.nav-inner {
+.header-inner {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 20px;
-  height: 60px;
+  height: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
-}
-
-.nav-logo { font-size: 18px; font-weight: 600; letter-spacing: 1px; }
-.nav-links { display: flex; gap: 30px; }
-.nav-links a { color: rgba(255, 255, 255, 0.7); text-decoration: none; font-size: 14px; transition: color 0.2s; }
-.nav-links a:hover, .nav-links a.active { color: #fff; font-weight: 500; }
-
-.banner-content {
-  position: relative;
-  z-index: 2;
-  max-width: 1200px;
-  margin: 0 auto;
   padding: 0 20px;
-  text-align: center;
 }
-.main-title { font-size: 32px; font-weight: bold; margin: 0 0 12px 0; letter-spacing: 2px; }
-.desc { font-size: 15px; color: #cbd5e1; }
+.logo-area { display: flex; align-items: center; gap: 12px; }
+.school-logo { height: 32px; object-fit: contain; }
+.divider { color: rgba(255,255,255,0.3); }
+.platform-name { font-size: 18px; font-weight: 600; letter-spacing: 1px; }
+.nav-links { display: flex; gap: 32px; }
+.nav-links a { 
+  color: #cbd5e1; 
+  font-size: 15px; 
+  text-decoration: none; 
+  transition: color 0.2s; 
+}
+.nav-links a:hover, .nav-links a.router-link-active { color: white; font-weight: 500; }
 
 /* ================= 主体内容 ================= */
 .main-content {
   flex: 1;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 30px 20px 60px;
+  padding: 40px 20px 80px;
   width: 100%;
 }
 
+/* 页面标题 */
+.page-title-bar {
+  text-align: center;
+  margin-bottom: 40px;
+}
+.page-title {
+  font-size: 32px;
+  color: #1e293b;
+  margin: 0 0 12px 0;
+  font-weight: bold;
+  letter-spacing: 2px;
+}
+.page-subtitle {
+  font-size: 15px;
+  color: #64748b;
+  margin: 0;
+}
+
+/* ================= 公司卡片网格 ================= */
 .grid-container {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 20px;
 }
 
-/* ================= 公司卡片 ================= */
 .company-card {
   background-color: #fff;
   border-radius: 10px;
@@ -262,7 +276,7 @@ const getLogoColor = (name: string) => {
   transition: all 0.3s ease;
   display: flex;
   flex-direction: column;
-  border: 1px solid #e5e7eb;
+  border: 1px solid #e2e8f0;
 }
 .company-card:hover {
   transform: translateY(-4px);
@@ -381,5 +395,31 @@ const getLogoColor = (name: string) => {
 }
 :deep(.el-pagination.is-background .el-pager li:hover) { 
   color: #2563eb; 
+}
+
+/* ================= 底部 ================= */
+.site-footer {
+  background: #0b1120;
+  color: #e2e8f0;
+  padding: 40px 20px 20px;
+  border-top: 1px solid #1e293b;
+  margin-top: auto;
+}
+.footer-inner {
+  max-width: 1200px; margin: 0 auto;
+  display: flex; justify-content: space-between; align-items: center;
+  flex-wrap: wrap; gap: 20px; padding-bottom: 30px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+.footer-left { display: flex; align-items: center; gap: 12px; }
+.footer-logo {
+  height: 40px; width: 40px; object-fit: contain;
+  background: white; border-radius: 50%; padding: 2px;
+}
+.footer-school-name { font-size: 18px; font-weight: 600; color: white; letter-spacing: 1px; }
+.footer-right { text-align: right; font-size: 14px; color: #94a3b8; line-height: 1.8; }
+.footer-copyright {
+  max-width: 1200px; margin: 20px auto 0;
+  text-align: center; font-size: 13px; color: #64748b;
 }
 </style>
