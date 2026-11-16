@@ -1,6 +1,6 @@
 <template>
   <div class="home-container">
-    <!-- 顶部导航栏 -->
+    <!-- 顶部导航栏 (已固定) -->
     <header class="top-header">
       <div class="header-inner">
         <div class="logo-area">
@@ -166,7 +166,6 @@
 
       <!-- 3. 需求信息 -->
       <section id="demand" class="section-block">
-        <!-- 修改 Home.vue 中的需求信息板块 -->
         <div class="section-header">
           <h2 class="section-title"><span class="bar"></span>需求信息</h2>
           <router-link to="/CompanyList" class="view-all">查看全部企业 ></router-link>
@@ -377,11 +376,13 @@ const getFairStatus = (dateStr: string) => {
   }
 }
 
-// 平滑滚动
+// 平滑滚动 (由于头部固定，留出余量)
 const scrollTo = (id: string) => {
   const el = document.getElementById(id)
   if (el) {
-    el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    // 计算元素在页面上的绝对位置，然后减去固定头部的高度 64px 和一点间距
+    const top = el.getBoundingClientRect().top + window.pageYOffset - 80
+    window.scrollTo({ top, behavior: 'smooth' })
   }
 }
 
@@ -449,6 +450,8 @@ const getLogoUrl = (logoName: string) => {
 <style scoped>
 /* ================= 基础布局 ================= */
 .home-container {
+  /* 因为头部 fixed 了，这里必须留出 64px 的高度，防止下面的 Hero 被遮住 */
+  padding-top: 64px; 
   min-height: 100vh;
   background-color: #f4f5f7;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
@@ -456,13 +459,15 @@ const getLogoUrl = (logoName: string) => {
 a { text-decoration: none; color: inherit; }
 ul, li { list-style: none; margin: 0; padding: 0; }
 
-/* ================= 顶部导航 ================= */
+/* ================= 顶部导航 (改为固定) ================= */
 .top-header {
+  position: fixed; /* 关键：绝对固定在屏幕顶部 */
+  top: 0;
+  left: 0;
+  width: 100%; /* 占满全屏宽度 */
   background: #0b1120;
   color: white;
-  position: sticky;
-  top: 0;
-  z-index: 100;
+  z-index: 1000; /* 确保层级最高 */
   height: 64px;
   border-bottom: 1px solid rgba(255,255,255,0.1);
 }
@@ -624,13 +629,12 @@ ul, li { list-style: none; margin: 0; padding: 0; }
 .modal-overlay {
   position: fixed; top: 0; left: 0; right: 0; bottom: 0;
   background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(4px);
-  display: flex; justify-content: center; align-items: center; z-index: 1000;
+  display: flex; justify-content: center; align-items: center; z-index: 2000; /* 确保在头部之上 */
 }
 .modal-content {
   background: white; width: 90%; max-width: 700px; border-radius: 12px; padding: 30px;
   position: relative; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
   max-height: 85vh; animation: modalFadeIn 0.3s ease;
-  /* 使用 flex 布局方便内部滚动 */
   display: flex; flex-direction: column;
 }
 @keyframes modalFadeIn {
@@ -671,7 +675,7 @@ ul, li { list-style: none; margin: 0; padding: 0; }
 .job-modal-meta .company-name { color: #334155; font-weight: 500; }
 
 .job-modal-body {
-  flex: 1; overflow-y: auto; padding-right: 10px; /* 内部滚动 */
+  flex: 1; overflow-y: auto; padding-right: 10px;
 }
 .job-modal-body h3 {
   font-size: 16px; color: #1e293b; margin: 20px 0 12px 0;
