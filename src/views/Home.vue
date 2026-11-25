@@ -4,9 +4,9 @@
     <header class="top-header">
       <div class="header-inner">
         <div class="logo-area">
-          <img src="../assets/logoB.png" alt="重庆城市管理职业大学" class="school-logo" />
+          <img src="../assets/logo.png" alt="重庆城市管理职业大学" class="school-logo" />
           <span class="divider">|</span>
-          <span class="platform-name">西部陆海新通道沿线产教供需对接平台</span>
+          <span class="platform-name">重庆国际物流产教联合体</span>
         </div>
         <nav class="nav-links">
           <a href="#news" @click.prevent="scrollTo('news')">政策新闻</a>
@@ -24,7 +24,7 @@
       <div class="hero-content">
         <div class="sub-title">MODERN LOGISTICS · TALENT MATCHING PLATFORM</div>
         <h1 class="main-title">西部陆海新通道沿线产教供需对接平台</h1>
-        <p class="desc">服务通道物流、跨境电商与关务外贸产业链人才需求，汇聚沿线院校生源、专业与校内招聘会资源，对接企业岗位需求，构建产教融合协同服务枢纽。</p>
+        <p class="desc">服务国际物流、智能物流、跨境电商与关务外贸产业链人才需求，汇聚沿线院校生源、专业与校内招聘会资源，对接企业岗位需求，构建产教融合协同服务枢纽。</p>
         
         <div class="search-wrapper">
           <input 
@@ -286,7 +286,7 @@
 
     <!-- 底部 -->
     <footer class="site-footer">
-      <div class="footer-inner">
+      <!-- <div class="footer-inner">
         <div class="footer-left">
           <img :src="schoolLogo" alt="重庆城市管理职业大学" class="footer-logo" />
           <span class="footer-school-name">重庆城市管理职业大学</span>
@@ -295,7 +295,7 @@
           <p>主办：重庆城市管理职业大学 · 产教融合项目组</p>
           <p>平台定位：西部陆海新通道沿线产教供需对接枢纽</p>
         </div>
-      </div>
+      </div> -->
       <div class="footer-copyright">
         © 2026 西部陆海新通道沿线产教供需对接平台
       </div>
@@ -481,9 +481,9 @@ ul, li { list-style: none; margin: 0; padding: 0; }
   padding: 0 20px;
 }
 .logo-area { display: flex; align-items: center; gap: 12px; }
-.school-logo { height: 32px; object-fit: contain; }
+.school-logo { height: 36px; object-fit: contain; }
 .divider { color: rgba(255,255,255,0.3); }
-.platform-name { font-size: 18px; font-weight: 600; letter-spacing: 1px; }
+.platform-name { font-size: 24px; font-weight: 600; letter-spacing: 1px; }
 .nav-links { display: flex; gap: 32px; }
 .nav-links a { color: #cbd5e1; font-size: 15px; transition: color 0.2s; cursor: pointer; }
 .nav-links a:hover { color: white; }
@@ -613,7 +613,7 @@ ul, li { list-style: none; margin: 0; padding: 0; }
 
 /* ================= 底部 ================= */
 .site-footer {
-  background: #0b1120; color: #e2e8f0; padding: 40px 20px 20px; border-top: 1px solid #1e293b;
+  background: #0b1120; color: #e2e8f0; padding: 40px; border-top: 1px solid #1e293b;
 }
 .footer-inner {
   max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center;
@@ -623,7 +623,7 @@ ul, li { list-style: none; margin: 0; padding: 0; }
 .footer-logo { height: 40px; width: 40px; object-fit: contain; background: white; border-radius: 50%; padding: 2px; }
 .footer-school-name { font-size: 18px; font-weight: 600; color: white; letter-spacing: 1px; }
 .footer-right { text-align: right; font-size: 14px; color: #94a3b8; line-height: 1.8; }
-.footer-copyright { max-width: 1200px; margin: 20px auto 0; text-align: center; font-size: 13px; color: #64748b; }
+.footer-copyright { max-width: 1200px; margin: 20px auto 20px;text-align: center; font-size: 13px; color: #64748b; }
 
 /* ================= 弹框通用样式 ================= */
 .modal-overlay {
