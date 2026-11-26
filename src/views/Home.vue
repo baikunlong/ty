@@ -20,21 +20,47 @@
     <section class="hero-section">
       <div class="hero-bg" :style="{ backgroundImage: `url(${heroBg})` }"></div>
       <div class="hero-overlay"></div>
-      
-      <div class="hero-content">
-        <div class="sub-title">MODERN LOGISTICS · TALENT MATCHING PLATFORM</div>
-        <h1 class="main-title">西部陆海新通道沿线产教供需对接平台</h1>
-        <p class="desc">服务国际物流、智能物流、跨境电商与关务外贸产业链人才需求，汇聚沿线院校生源、专业与校内招聘会资源，对接企业岗位需求，构建产教融合协同服务枢纽。</p>
-        
-        <div class="search-wrapper">
-          <input 
-            v-model="searchKeyword" 
-            type="text" 
-            placeholder="搜索岗位标题 / 生源专业 / 政策新闻标题 / 企业名称" 
-            class="search-input"
-            @keyup.enter="handleGlobalSearch"
-          />
-          <button class="search-btn" @click="handleGlobalSearch">搜索</button>
+
+      <div class="hero-content-wrap">
+        <!-- 左侧二维码卡片 -->
+        <div class="hero-qrcode-card">
+          <div class="qrcode-box">
+            <img v-if="supplyQrImg" :src="supplyQrImg" alt="供给填报二维码" />
+            <div v-else class="loading">生成中...</div>
+          </div>
+          <div class="qrcode-text">
+            <div class="qrcode-title">供给入口</div>
+            <!-- <div class="qrcode-tip">院校生源填报</div> -->
+          </div>
+        </div>
+
+        <div class="hero-content">
+          <div class="sub-title">MODERN LOGISTICS · TALENT MATCHING PLATFORM</div>
+          <h1 class="main-title">西部陆海新通道沿线产教供需对接平台</h1>
+          <p class="desc">服务国际物流、智能物流、跨境电商与关务外贸产业链人才需求，汇聚沿线院校生源、专业与校内招聘会资源，对接企业岗位需求，构建产教融合协同服务枢纽。</p>
+
+          <div class="search-wrapper">
+            <input
+              v-model="searchKeyword"
+              type="text"
+              placeholder="搜索岗位标题 / 企业名称"
+              class="search-input"
+              @keyup.enter="handleGlobalSearch"
+            />
+            <button class="search-btn" @click="handleGlobalSearch">搜索</button>
+          </div>
+        </div>
+
+        <!-- 右侧二维码卡片 -->
+        <div class="hero-qrcode-card">
+          <div class="qrcode-box">
+            <img v-if="demandQrImg" :src="demandQrImg" alt="需求填报二维码" />
+            <div v-else class="loading">生成中...</div>
+          </div>
+          <div class="qrcode-text">
+            <div class="qrcode-title">需求入口</div>
+            <!-- <div class="qrcode-tip">企业岗位填报</div> -->
+          </div>
         </div>
       </div>
 
@@ -59,178 +85,85 @@
       </div>
     </section>
 
-    <!-- 主体内容 -->
+    <!-- ==================== 主体内容：左中右三栏 ==================== -->
     <main class="main-content">
-      
-      <!-- 1. 政策新闻 -->
-      <section id="news" class="section-block">
-        <div class="section-header">
-          <h2 class="section-title"><span class="bar"></span>政策新闻</h2>
-          <router-link to="/news" class="view-all">查看全部 ></router-link>
-        </div>
-        <div class="news-grid">
-          <div class="news-card" v-for="news in newsList.slice(0, 6)" :key="news.id" @click="openNewsModal(news)">
-            <h3 class="news-title">{{ news.news_title }}</h3>
-            <p class="news-summary">{{ news.news_summary }}</p>
-            <div class="news-footer">
-              <span class="platform">{{ news.publish_platform }}</span>
-              <span class="date">{{ news.publish_time }}</span>
-            </div>
-          </div>
-        </div>
-      </section>
+      <div class="three-col-grid">
 
-      <!-- 2. 供给信息 -->
-      <section id="supply" class="section-block">
-        <div class="section-header">
-          <h2 class="section-title"><span class="bar"></span>供给信息</h2>
-          <div class="supply-tabs">
-            <span :class="{ active: activeSupplyTab === 'source' }" @click="activeSupplyTab = 'source'">毕业生源信息</span>
-            <span :class="{ active: activeSupplyTab === 'major' }" @click="activeSupplyTab = 'major'">专业介绍</span>
-            <span :class="{ active: activeSupplyTab === 'fair' }" @click="activeSupplyTab = 'fair'">校内招聘会</span>
-          </div>
-        </div>
-
-        <div class="supply-content">
-          <!-- Tab 1: 毕业生源信息 -->
-          <div v-if="activeSupplyTab === 'source'" class="table-wrapper">
-            <table class="data-table">
-              <thead>
-                <tr>
-                  <th>专业名称</th>
-                  <th>学制</th>
-                  <th>学历层次</th>
-                  <th>男生</th>
-                  <th>女生</th>
-                  <th>毕业生人数</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="major in businessMajors" :key="major.id">
-                  <td>{{ major.major_name }}</td>
-                  <td>{{ major.school_length }}</td>
-                  <td>{{ major.education_level }}</td>
-                  <td>{{ major.male_count }}</td>
-                  <td>{{ major.female_count }}</td>
-                  <td>{{ major.graduate_count }}</td>
-                </tr>
-                <tr class="total-row">
-                  <td>合计</td>
-                  <td>—</td>
-                  <td>—</td>
-                  <td>{{ totalMale }}</td>
-                  <td>{{ totalFemale }}</td>
-                  <td>{{ totalGraduates }}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-          <!-- Tab 2: 专业介绍 -->
-          <div v-if="activeSupplyTab === 'major'" class="major-intro-grid">
-            <div class="intro-card" v-for="major in businessMajors" :key="major.id">
-              <h4>{{ major.major_name }}</h4>
-              <p class="intro-text">{{ major.major_intro }}</p>
+        <!-- 1. 政策新闻 -->
+        <section id="news" class="section-block">
+          <div class="block-cover">
+            <img src="../assets/index1.png" alt="政策新闻" />
+            <div class="cover-title">
+              <h2>政策新闻</h2>
+              <span>POLICY NEWS</span>
             </div>
           </div>
 
-          <!-- Tab 3: 校内招聘会 -->
-          <div v-if="activeSupplyTab === 'fair'" class="table-wrapper">
-            <table class="data-table fair-table">
-              <thead>
-                <tr>
-                  <th>招聘会名称</th>
-                  <th>举办地址</th>
-                  <th>举办日期</th>
-                  <th>状态</th>
-                  <th>操作</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="fair in fairList" :key="fair.id">
-                  <td>{{ fair.fair_title }}</td>
-                  <td>{{ fair.fair_address }}</td>
-                  <td>{{ fair.fair_date }}</td>
-                  <td>
-                    <span :class="['status-tag', getFairStatus(fair.fair_date).class]">
-                      {{ getFairStatus(fair.fair_date).text }}
-                    </span>
-                  </td>
-                  <td><a :href="fair.detail_url" target="_blank" class="link-btn">查看详情</a></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </section>
+          <ul class="info-list">
+            <li v-for="news in newsPreview" :key="news.id" @click="openNewsModal(news)">
+              <span class="dot"></span>
+              <span class="list-title" :title="news.news_title">{{ news.news_title }}</span>
+              <span class="list-extra">{{ news.publish_time }}</span>
+            </li>
+          </ul>
 
-      <!-- 3. 需求信息 -->
-      <section id="demand" class="section-block">
-        <div class="section-header">
-          <h2 class="section-title"><span class="bar"></span>需求信息</h2>
-          <router-link to="/CompanyList" class="view-all">查看全部企业 ></router-link>
-        </div>
-        
-        <!-- 筛选器 -->
-        <div class="filter-bar">
-          <div class="filter-group">
-            <span class="label">专业方向：</span>
-            <span 
-              v-for="major in filterMajors" :key="major.value"
-              :class="['filter-tag', { active: selectedMajor === major.value }]"
-              @click="selectMajor(major.value)"
-            >{{ major.label }}</span>
+          <div class="more-wrapper">
+            <router-link to="/news" class="more-btn">更多</router-link>
           </div>
-          <div class="filter-group">
-            <span class="label">其他条件：</span>
-            <select v-model="selectedEdu" @change="handleSearch" class="filter-select">
-              <option value="">学历要求</option>
-              <option value="大专">大专</option>
-              <option value="本科">本科</option>
-              <option value="硕士">硕士及以上</option>
-            </select>
-            <select v-model="selectedExp" @change="handleSearch" class="filter-select">
-              <option value="">工作经验</option>
-              <option value="不限">经验不限</option>
-              <option value="1-3年">1-3年</option>
-              <option value="3-5年">3-5年</option>
-              <option value="5年以上">5年以上</option>
-            </select>
-            <span class="reset-btn" @click="resetFilters">清空条件</span>
-          </div>
-        </div>
+        </section>
 
-        <!-- 岗位卡片 (点击绑定 openJobModal) -->
-        <div class="job-grid" v-if="paginatedJobs.length > 0">
-          <div v-for="job in paginatedJobs" :key="job.job_id" class="job-card" @click="openJobModal(job)">
-            <h3 class="job-title">{{ job.title }}</h3>
-            <div class="tags">
-              <span class="tag edu">{{ job.require_edu_level || '学历不限' }}</span>
-              <span class="tag">{{ job.require_work_years || '经验不限' }}</span>
-            </div>
-            
-            <p class="job-desc">{{ job.ld2_description || '暂无详细描述' }}</p>
-            
-            <div class="job-company">
-              <img v-if="job.comp_logo" :src="getLogoUrl(job.comp_logo)" class="mini-logo" @error="(e) => (e.target as HTMLImageElement).style.display = 'none'"/>
-              <span class="comp-name">{{ job.comp_name }}</span>
+        <!-- 2. 供给信息 -->
+        <section id="supply" class="section-block">
+          <div class="block-cover">
+            <img src="../assets/index2.png" alt="供给信息" />
+            <div class="cover-title">
+              <h2>供给信息</h2>
+              <span>SUPPLY INFO</span>
             </div>
           </div>
-        </div>
-        <div v-else class="empty-tip">暂无符合条件的招聘信息</div>
 
-        <!-- 分页 -->
-        <div class="pagination-wrapper" v-if="filteredJobs.length > 0">
-          <el-pagination
-            v-model:current-page="currentPage"
-            :page-size="pageSize"
-            :total="filteredJobs.length"
-            layout="total, prev, pager, next"
-            background
-            @current-change="handleCurrentChange"
-          />
-        </div>
-      </section>
+          <ul class="info-list">
+            <li v-for="major in majorPreview" :key="major.id" @click="openSupplyModal">
+              <span class="dot"></span>
+              <span class="list-title" :title="major.major_name">{{ major.major_name }}</span>
+              <span class="list-extra highlight">{{ major.graduate_count }} 人</span>
+            </li>
+          </ul>
+
+          <div class="more-wrapper">
+            <button class="more-btn" @click="openSupplyModal">更多</button>
+          </div>
+        </section>
+
+        <!-- 3. 需求信息 -->
+        <section id="demand" class="section-block">
+          <div class="block-cover">
+            <img src="../assets/index3.png" alt="需求信息" />
+            <div class="cover-title">
+              <h2>需求信息</h2>
+              <span>DEMAND INFO</span>
+            </div>
+          </div>
+
+          <ul class="info-list" v-if="jobPreview.length > 0">
+            <li v-for="job in jobPreview" :key="job.job_id" @click="openJobModal(job)">
+              <span class="dot"></span>
+              <span class="list-title" :title="job.title">{{ job.title }}</span>
+              <span class="list-extra">{{ job.require_edu_level || '学历不限' }}</span>
+            </li>
+          </ul>
+          <ul class="info-list" v-else>
+            <li class="empty-item">暂无符合条件的招聘信息</li>
+          </ul>
+
+          <div class="more-wrapper">
+            <router-link to="/JobList" class="more-btn">更多</router-link>
+          </div>
+        </section>
+
+      </div>
+
+      <!-- ==================== 弹框 ==================== -->
 
       <!-- 新闻详情弹框 -->
       <div v-if="selectedNews" class="modal-overlay" @click.self="closeNewsModal">
@@ -250,16 +183,102 @@
         </div>
       </div>
 
+      <!-- 供给信息弹框（生源信息 / 校内招聘会） -->
+      <div v-if="showSupplyModal" class="modal-overlay" @click.self="closeSupplyModal">
+        <div class="modal-content supply-modal">
+          <button class="close-btn" @click="closeSupplyModal">×</button>
+          <h2 class="modal-title">供给信息</h2>
+
+          <div class="supply-tabs">
+            <span :class="{ active: supplyModalTab === 'source' }" @click="supplyModalTab = 'source'">毕业生源信息</span>
+            <span :class="{ active: supplyModalTab === 'major' }" @click="supplyModalTab = 'major'">专业介绍</span>
+            <span :class="{ active: supplyModalTab === 'fair' }" @click="supplyModalTab = 'fair'">校内招聘会</span>
+          </div>
+
+          <div class="modal-scroll">
+            <!-- Tab 1：毕业生源信息 -->
+            <div v-if="supplyModalTab === 'source'" class="table-wrapper">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>专业名称</th>
+                    <th>学制</th>
+                    <th>学历层次</th>
+                    <th>男生</th>
+                    <th>女生</th>
+                    <th>毕业生人数</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="major in businessMajors" :key="major.id">
+                    <td>{{ major.major_name }}</td>
+                    <td>{{ major.school_length }}</td>
+                    <td>{{ major.education_level }}</td>
+                    <td>{{ major.male_count }}</td>
+                    <td>{{ major.female_count }}</td>
+                    <td>{{ major.graduate_count }}</td>
+                  </tr>
+                  <tr class="total-row">
+                    <td>合计</td>
+                    <td>—</td>
+                    <td>—</td>
+                    <td>{{ totalMale }}</td>
+                    <td>{{ totalFemale }}</td>
+                    <td>{{ totalGraduates }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Tab 2：专业介绍 -->
+            <div v-if="supplyModalTab === 'major'" class="major-intro-grid">
+              <div class="intro-card" v-for="major in businessMajors" :key="major.id">
+                <h4>{{ major.major_name }}</h4>
+                <p class="intro-text">{{ major.major_intro }}</p>
+              </div>
+            </div>
+
+            <!-- Tab 3：校内招聘会 -->
+            <div v-if="supplyModalTab === 'fair'" class="table-wrapper">
+              <table class="data-table fair-table">
+                <thead>
+                  <tr>
+                    <th>招聘会名称</th>
+                    <th>举办地址</th>
+                    <th>举办日期</th>
+                    <th>状态</th>
+                    <th>操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="fair in fairList" :key="fair.id">
+                    <td>{{ fair.fair_title }}</td>
+                    <td>{{ fair.fair_address }}</td>
+                    <td>{{ fair.fair_date }}</td>
+                    <td>
+                      <span :class="['status-tag', getFairStatus(fair.fair_date).class]">
+                        {{ getFairStatus(fair.fair_date).text }}
+                      </span>
+                    </td>
+                    <td><a :href="fair.detail_url" target="_blank" class="link-btn">查看详情</a></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- 岗位详情弹框 -->
       <div v-if="selectedJob" class="modal-overlay" @click.self="closeJobModal">
         <div class="modal-content job-detail-modal">
           <button class="close-btn" @click="closeJobModal">×</button>
-          
+
           <div class="job-modal-header">
             <h2 class="job-modal-title">{{ selectedJob.title }}</h2>
             <div class="job-modal-salary">{{ selectedJob.salary }}</div>
           </div>
-          
+
           <div class="job-modal-meta">
             <span class="tag edu">{{ selectedJob.require_edu_level || '学历不限' }}</span>
             <span class="tag">{{ selectedJob.require_work_years || '经验不限' }}</span>
@@ -272,7 +291,7 @@
           <div class="job-modal-body">
             <h3>岗位职责 / 需求描述</h3>
             <div class="desc-text">{{ selectedJob.ld2_description || '暂无详细描述' }}</div>
-            
+
             <h3>联系方式与地址</h3>
             <div class="contact-box">
               <p><strong>联系人：</strong>{{ selectedJob.recruiter_name }} ({{ selectedJob.recruiter_title }})</p>
@@ -286,16 +305,6 @@
 
     <!-- 底部 -->
     <footer class="site-footer">
-      <!-- <div class="footer-inner">
-        <div class="footer-left">
-          <img :src="schoolLogo" alt="重庆城市管理职业大学" class="footer-logo" />
-          <span class="footer-school-name">重庆城市管理职业大学</span>
-        </div>
-        <div class="footer-right">
-          <p>主办：重庆城市管理职业大学 · 产教融合项目组</p>
-          <p>平台定位：西部陆海新通道沿线产教供需对接枢纽</p>
-        </div>
-      </div> -->
       <div class="footer-copyright">
         © 2026 西部陆海新通道沿线产教供需对接平台
       </div>
@@ -304,17 +313,45 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
+import QRCode from 'qrcode'
 import jobData from '../data/jobData.json'
 import newsData from '../data/channel_policy_news.json'
 import majorData from '../data/major_info.json'
 import fairData from '../data/job_fair.json'
-import schoolLogo from '../assets/logoB.png'
 import heroBg from '../assets/hero-bg.jpg'
+
+/** 首页每栏最多展示的条目数 */
+const LIST_LIMIT = 5
+
+// --- 二维码配置，这里替换成你实际的填报地址 ---
+const supplyUrl = ref('https://cgsxy.yujs.top/supply-form')
+const demandUrl = ref('https://cgsxy.yujs.top/demand-form')
+const supplyQrImg = ref('')
+const demandQrImg = ref('')
+
+const createQrCode = async (text: string) => {
+  return QRCode.toDataURL(text, {
+    width: 120,
+    margin: 1,
+    errorCorrectionLevel: 'M',
+    color: {
+      dark: '#000',
+      light: '#fff'
+    }
+  })
+}
+
+onMounted(async () => {
+  supplyQrImg.value = await createQrCode(supplyUrl.value)
+  demandQrImg.value = await createQrCode(demandUrl.value)
+})
 
 // --- 弹框状态 ---
 const selectedNews = ref<any>(null)
 const selectedJob = ref<any>(null)
+const showSupplyModal = ref(false)
+const supplyModalTab = ref('source')
 
 const openNewsModal = (news: any) => {
   selectedNews.value = news
@@ -334,19 +371,38 @@ const closeJobModal = () => {
   document.body.style.overflow = 'auto'
 }
 
+const openSupplyModal = () => {
+  showSupplyModal.value = true
+  supplyModalTab.value = 'source'
+  document.body.style.overflow = 'hidden'
+}
+const closeSupplyModal = () => {
+  showSupplyModal.value = false
+  document.body.style.overflow = 'auto'
+}
+
 // --- 全局状态 ---
 const searchKeyword = ref('')
-const activeSupplyTab = ref('source')
-const currentPage = ref(1)
-const pageSize = ref(6)
-const selectedMajor = ref('全部')
-const selectedEdu = ref('')
-const selectedExp = ref('')
 
-// --- 数据过滤 ---
+// --- 数据 ---
 const businessMajors = computed(() => majorData.filter(m => m.college_name === '商学院'))
 const newsList = ref(newsData)
 const fairList = ref(fairData)
+
+// 三栏列表预览数据
+const newsPreview = computed(() => newsList.value.slice(0, LIST_LIMIT))
+const majorPreview = computed(() => businessMajors.value.slice(0, LIST_LIMIT))
+
+// 需求信息（受顶部搜索框关键词影响）
+const filteredJobs = computed(() => {
+  const kw = searchKeyword.value.trim().toLowerCase()
+  if (!kw) return jobData
+  return jobData.filter(job =>
+    (job.title || '').toLowerCase().includes(kw) ||
+    (job.comp_name || '').toLowerCase().includes(kw)
+  )
+})
+const jobPreview = computed(() => filteredJobs.value.slice(0, LIST_LIMIT))
 
 // 统计
 const stats = computed(() => {
@@ -380,78 +436,20 @@ const getFairStatus = (dateStr: string) => {
 const scrollTo = (id: string) => {
   const el = document.getElementById(id)
   if (el) {
-    // 计算元素在页面上的绝对位置，然后减去固定头部的高度 64px 和一点间距
     const top = el.getBoundingClientRect().top + window.pageYOffset - 80
     window.scrollTo({ top, behavior: 'smooth' })
   }
 }
 
-// 需求信息逻辑
-const filterMajors = [
-  { label: '全部', value: '全部', keywords: [] },
-  { label: '现代物流管理', value: '现代物流管理', keywords: ['物流', '仓储', '运输', '货运', '供应链'] },
-  { label: '跨境电子商务', value: '跨境电子商务', keywords: ['跨境', '电商', '外贸', '运营'] },
-  { label: '关务与外贸服务', value: '关务与外贸服务', keywords: ['关务', '报关', '报检', '国际'] },
-  { label: '金融服务与管理', value: '金融服务与管理', keywords: ['金融', '财务', '会计', '投资'] }
-]
-
-const filteredJobs = computed(() => {
-  return jobData.filter(job => {
-    let matchKeyword = true
-    if (searchKeyword.value.trim()) {
-      const kw = searchKeyword.value.toLowerCase().trim()
-      matchKeyword = !!(
-        (job.title && job.title.toLowerCase().includes(kw)) ||
-        (job.comp_name && job.comp_name.toLowerCase().includes(kw))
-      )
-    }
-    let matchMajor = true
-    if (selectedMajor.value !== '全部') {
-      const currentMajor = filterMajors.find(m => m.value === selectedMajor.value)
-      if (currentMajor) {
-        const textToSearch = `${job.title} ${job.ld2_description} ${job.comp_industry}`.toLowerCase()
-        matchMajor = currentMajor.keywords.some(kw => textToSearch.includes(kw.toLowerCase()))
-      }
-    }
-    let matchEdu = true
-    if (selectedEdu.value) {
-      matchEdu = !!(job.require_edu_level && job.require_edu_level.includes(selectedEdu.value))
-    }
-    let matchExp = true
-    if (selectedExp.value) {
-      matchExp = !!(job.require_work_years && job.require_work_years.includes(selectedExp.value))
-    }
-    return matchKeyword && matchMajor && matchEdu && matchExp
-  })
-})
-
-const paginatedJobs = computed(() => {
-  const start = (currentPage.value - 1) * pageSize.value
-  return filteredJobs.value.slice(start, start + pageSize.value)
-})
-
-const selectMajor = (val: string) => { selectedMajor.value = val; handleSearch() }
-const handleSearch = () => { currentPage.value = 1 }
-const handleCurrentChange = (val: number) => { currentPage.value = val; scrollTo('demand') }
-const resetFilters = () => {
-  searchKeyword.value = ''
-  selectedMajor.value = '全部'
-  selectedEdu.value = ''
-  selectedExp.value = ''
-  handleSearch()
-}
-const handleGlobalSearch = () => { scrollTo('demand') }
-
-const getLogoUrl = (logoName: string) => {
-  try { return new URL(`../assets/img/${logoName}`, import.meta.url).href } catch (e) { return '' }
+const handleGlobalSearch = () => {
+  scrollTo('demand')
 }
 </script>
 
 <style scoped>
 /* ================= 基础布局 ================= */
 .home-container {
-  /* 因为头部 fixed 了，这里必须留出 64px 的高度，防止下面的 Hero 被遮住 */
-  padding-top: 64px; 
+  padding-top: 64px;
   min-height: 100vh;
   background-color: #f4f5f7;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
@@ -459,20 +457,20 @@ const getLogoUrl = (logoName: string) => {
 a { text-decoration: none; color: inherit; }
 ul, li { list-style: none; margin: 0; padding: 0; }
 
-/* ================= 顶部导航 (改为固定) ================= */
+/* ================= 顶部导航 ================= */
 .top-header {
-  position: fixed; /* 关键：绝对固定在屏幕顶部 */
+  position: fixed;
   top: 0;
   left: 0;
-  width: 100%; /* 占满全屏宽度 */
+  width: 100%;
   background: #0b1120;
   color: white;
-  z-index: 1000; /* 确保层级最高 */
+  z-index: 1000;
   height: 64px;
   border-bottom: 1px solid rgba(255,255,255,0.1);
 }
 .header-inner {
-  max-width: 1200px;
+  max-width: 90%;
   margin: 0 auto;
   height: 100%;
   display: flex;
@@ -509,7 +507,61 @@ ul, li { list-style: none; margin: 0; padding: 0; }
   background: linear-gradient(to bottom, rgba(15, 23, 42, 0.8), rgba(15, 23, 42, 0.4));
   z-index: 1;
 }
-.hero-content { position: relative; z-index: 2; max-width: 800px; margin: 0 auto; }
+.hero-content-wrap {
+  position: relative;
+  z-index: 2;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+.hero-content {
+  flex: 1;
+  max-width: 800px;
+  margin: 0 auto;
+}
+.hero-qrcode-card {
+  flex-shrink: 0;
+  text-align: center;
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(8px);
+  padding: 16px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.15);
+}
+.qrcode-box {
+  width: 120px;
+  height: 120px;
+  margin: 0 auto 10px;
+  background: #fff;
+  padding: 6px;
+  border-radius: 8px;
+}
+.qrcode-box img {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.loading {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  color: #666;
+}
+.qrcode-title {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+.qrcode-tip {
+  font-size: 12px;
+  color: #cbd5e1;
+}
 .sub-title { color: #38bdf8; font-size: 13px; letter-spacing: 4px; font-weight: 600; margin-bottom: 16px; }
 .main-title { font-size: 42px; font-weight: bold; margin-bottom: 24px; text-shadow: 0 4px 10px rgba(0,0,0,0.5); letter-spacing: 2px; }
 .desc { font-size: 16px; color: #e2e8f0; line-height: 1.6; margin-bottom: 40px; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
@@ -536,31 +588,172 @@ ul, li { list-style: none; margin: 0; padding: 0; }
 .stat-num span { font-size: 14px; margin-left: 4px; color: #93c5fd; }
 .stat-label { font-size: 14px; color: #cbd5e1; }
 
-/* ================= 主体内容 ================= */
-.main-content { max-width: 1200px; margin: 0 auto; padding: 40px 20px 80px; }
-.section-block { background: white; border-radius: 12px; padding: 30px; margin-bottom: 40px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02); border: 1px solid #e2e8f0; scroll-margin-top: 80px; }
-.section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
-.section-title { font-size: 22px; color: #1e293b; display: flex; align-items: center; gap: 12px; margin: 0; }
-.section-title .bar { width: 4px; height: 20px; background: #2563eb; border-radius: 2px; }
-.view-all { color: #64748b; font-size: 14px; }
-.view-all:hover { color: #2563eb; }
+/* ================= 主体内容：三栏布局 ================= */
+.main-content {
+  max-width: 90%;
+  margin: 0 auto; padding: 40px 20px 60px; }
 
-/* 新闻 */
-.news-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-.news-card { border: 1px solid #f1f5f9; border-radius: 8px; padding: 20px; transition: all 0.2s; cursor: pointer; }
-.news-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.05); border-color: #bfdbfe; }
-.news-title { font-size: 16px; color: #1e293b; margin: 0 0 12px 0; font-weight: 600; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
-.news-summary { font-size: 14px; color: #64748b; line-height: 1.6; margin-bottom: 16px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; height: 44px; }
-.news-footer { display: flex; justify-content: space-between; font-size: 13px; color: #94a3b8; }
+.three-col-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  align-items: stretch;
+}
 
-/* 供给信息 */
-.supply-tabs { display: flex; gap: 12px; }
-.supply-tabs span { padding: 6px 16px; font-size: 15px; color: #475569; cursor: pointer; border-bottom: 2px solid transparent; }
+.section-block {
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.05);
+  display: flex;
+  flex-direction: column;
+  scroll-margin-top: 80px;
+  transition: box-shadow 0.25s, transform 0.25s;
+}
+.section-block:hover {
+  box-shadow: 0 10px 28px rgba(15, 23, 42, 0.1);
+  transform: translateY(-2px);
+}
+
+/* 每栏顶部图片 */
+.block-cover {
+  position: relative;
+  height: 150px;
+  overflow: hidden;
+  background: #0f172a;
+}
+.block-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.45s ease;
+}
+.section-block:hover .block-cover img { transform: scale(1.06); }
+.cover-title {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 22px;
+  background: linear-gradient(90deg, rgba(15, 23, 42, 0.82), rgba(15, 23, 42, 0.12));
+}
+.cover-title h2 {
+  color: #fff;
+  font-size: 21px;
+  font-weight: 600;
+  margin: 0 0 6px;
+  letter-spacing: 2px;
+}
+.cover-title span {
+  color: #38bdf8;
+  font-size: 11px;
+  letter-spacing: 2px;
+  font-weight: 600;
+}
+
+/* 列表 */
+.info-list {
+  flex: 1;
+  padding: 6px 18px;
+}
+.info-list li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 13px 0;
+  border-bottom: 1px dashed #eef2f7;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.18s;
+}
+.info-list li:last-child { border-bottom: none; }
+.info-list li:hover .list-title { color: #2563eb; }
+.info-list li:hover .dot { background: #38bdf8; transform: scale(1.3); }
+
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #2563eb;
+  flex-shrink: 0;
+  transition: all 0.18s;
+}
+.list-title {
+  flex: 1;
+  min-width: 0;
+  color: #334155;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  transition: color 0.18s;
+}
+.list-extra {
+  flex-shrink: 0;
+  font-size: 12px;
+  color: #94a3b8;
+}
+.list-extra.highlight { color: #ef4444; font-weight: 600; }
+.empty-item {
+  justify-content: center;
+  color: #94a3b8;
+  cursor: default;
+  padding: 30px 0;
+}
+
+/* 更多按钮 */
+.more-wrapper { padding: 12px 18px 18px; }
+.more-btn {
+  display: block;
+  width: 100%;
+  padding: 9px 0;
+  border-radius: 8px;
+  background: #f1f5f9;
+  color: #2563eb;
+  font-size: 14px;
+  font-weight: 500;
+  font-family: inherit;
+  line-height: 1.5;
+  border: 1px solid #e2e8f0;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.more-btn:hover {
+  background: #2563eb;
+  color: #fff;
+  border-color: #2563eb;
+}
+
+/* 响应式 */
+@media (max-width: 1024px) {
+  .hero-content-wrap { flex-direction: column; gap: 20px; }
+  .three-col-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 680px) {
+  .three-col-grid { grid-template-columns: 1fr; }
+  .main-title { font-size: 28px; }
+}
+
+/* ================= 供给信息弹框内表格 ================= */
+.supply-tabs { display: flex; gap: 12px; margin-bottom: 18px; border-bottom: 1px solid #e2e8f0; }
+.supply-tabs span {
+  padding: 8px 16px; font-size: 15px; color: #475569; cursor: pointer;
+  border-bottom: 2px solid transparent; margin-bottom: -1px; transition: all 0.2s;
+}
+.supply-tabs span:hover { color: #2563eb; }
 .supply-tabs span.active { color: #2563eb; border-bottom-color: #2563eb; font-weight: 600; }
+
+.supply-modal { max-width: 900px; }
+.modal-scroll { flex: 1; overflow-y: auto; padding-right: 4px; }
+
 .table-wrapper { overflow-x: auto; }
 .data-table { width: 100%; border-collapse: collapse; text-align: center; font-size: 14px; }
 .data-table th, .data-table td { padding: 14px; border-bottom: 1px solid #e2e8f0; color: #334155; }
 .data-table th { background: #f8fafc; font-weight: 600; color: #1e293b; }
+.data-table tbody tr:hover td { background: #f8fafc; }
 .data-table .total-row td { background: #f0fdf4; color: #166534; font-weight: bold; }
 
 /* 校内招聘会表格 */
@@ -577,59 +770,24 @@ ul, li { list-style: none; margin: 0; padding: 0; }
 .status-tag.upcoming { background: #eff6ff; color: #3b82f6; }
 .link-btn { color: #2563eb; font-size: 13px; }
 .link-btn:hover { text-decoration: underline; }
-.major-intro-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 20px; }
-.intro-card { border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px; }
-.intro-card h4 { color: #1e293b; margin: 0 0 12px 0; font-size: 16px; }
-.intro-text { font-size: 14px; color: #64748b; line-height: 1.6; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
 
-/* 需求信息 */
-.filter-bar { display: flex; flex-wrap: wrap; gap: 20px; margin-bottom: 24px; background: #f8fafc; padding: 16px; border-radius: 8px; }
-.filter-group { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-.filter-group .label { font-size: 14px; color: #64748b; }
-.filter-tag { padding: 4px 14px; font-size: 13px; border-radius: 20px; cursor: pointer; color: #475569; background: white; border: 1px solid #cbd5e1; }
-.filter-tag.active { background: #2563eb; color: white; border-color: #2563eb; }
-.filter-select { padding: 6px 12px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 13px; color: #334155; outline: none; }
-.reset-btn { font-size: 13px; color: #94a3b8; cursor: pointer; margin-left: 10px; }
-.reset-btn:hover { color: #ef4444; }
-
-.job-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 20px; }
-.job-card { 
-  position: relative; border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px; 
-  transition: all 0.2s; background: white; display: flex; flex-direction: column; cursor: pointer;
-}
-.job-card:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0,0,0,0.06); border-color: #bfdbfe; }
-.job-title { font-size: 16px; color: #1e293b; font-weight: 600; margin: 0 0 12px 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.tags { display: flex; gap: 8px; margin-bottom: 16px; }
-.tag { font-size: 12px; padding: 2px 8px; border-radius: 4px; background: #f1f5f9; color: #64748b; }
-.tag.edu { background: #eff6ff; color: #2563eb; }
-.job-desc {
-  font-size: 13px; color: #64748b; line-height: 1.6; margin-bottom: 16px;
-  display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;
-}
-.job-company { display: flex; align-items: center; gap: 8px; font-size: 13px; color: #64748b; margin-top: auto; }
-.mini-logo { width: 20px; height: 20px; border-radius: 4px; object-fit: contain; }
-.empty-tip { text-align: center; color: #94a3b8; padding: 40px; }
-.pagination-wrapper { display: flex; justify-content: center; margin-top: 30px; }
+/* 专业介绍卡片 */
+.major-intro-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+.intro-card { border: 1px solid #e2e8f0; border-radius: 8px; padding: 18px; }
+.intro-card h4 { color: #1e293b; margin: 0 0 10px 0; font-size: 16px; }
+.intro-text { font-size: 14px; color: #64748b; line-height: 1.7; }
 
 /* ================= 底部 ================= */
 .site-footer {
   background: #0b1120; color: #e2e8f0; padding: 40px; border-top: 1px solid #1e293b;
 }
-.footer-inner {
-  max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center;
-  flex-wrap: wrap; gap: 20px; padding-bottom: 30px; border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-.footer-left { display: flex; align-items: center; gap: 12px; }
-.footer-logo { height: 40px; width: 40px; object-fit: contain; background: white; border-radius: 50%; padding: 2px; }
-.footer-school-name { font-size: 18px; font-weight: 600; color: white; letter-spacing: 1px; }
-.footer-right { text-align: right; font-size: 14px; color: #94a3b8; line-height: 1.8; }
-.footer-copyright { max-width: 1200px; margin: 20px auto 20px;text-align: center; font-size: 13px; color: #64748b; }
+.footer-copyright { max-width: 1200px; margin: 0 auto; text-align: center; font-size: 13px; color: #64748b; }
 
 /* ================= 弹框通用样式 ================= */
 .modal-overlay {
   position: fixed; top: 0; left: 0; right: 0; bottom: 0;
   background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(4px);
-  display: flex; justify-content: center; align-items: center; z-index: 2000; /* 确保在头部之上 */
+  display: flex; justify-content: center; align-items: center; z-index: 2000;
 }
 .modal-content {
   background: white; width: 90%; max-width: 700px; border-radius: 12px; padding: 30px;
@@ -674,21 +832,20 @@ ul, li { list-style: none; margin: 0; padding: 0; }
 .job-modal-meta .divider { width: 1px; height: 14px; background: #cbd5e1; }
 .job-modal-meta .company-name { color: #334155; font-weight: 500; }
 
-.job-modal-body {
-  flex: 1; overflow-y: auto; padding-right: 10px;
-}
+.job-modal-body { flex: 1; overflow-y: auto; padding-right: 10px; }
 .job-modal-body h3 {
   font-size: 16px; color: #1e293b; margin: 20px 0 12px 0;
   border-left: 4px solid #2563eb; padding-left: 10px; line-height: 1;
 }
 .job-modal-body h3:first-child { margin-top: 0; }
 
-.desc-text {
-  line-height: 1.8; color: #475569; white-space: pre-wrap; font-size: 14px;
-}
+.desc-text { line-height: 1.8; color: #475569; white-space: pre-wrap; font-size: 14px; }
 .contact-box {
   background: #f8fafc; border-radius: 8px; padding: 16px; border: 1px solid #e2e8f0; margin-top: 10px;
 }
 .contact-box p { margin: 0 0 8px 0; color: #475569; font-size: 14px; }
 .contact-box p:last-child { margin-bottom: 0; }
+
+.tag { font-size: 12px; padding: 2px 8px; border-radius: 4px; background: #f1f5f9; color: #64748b; }
+.tag.edu { background: #eff6ff; color: #2563eb; }
 </style>

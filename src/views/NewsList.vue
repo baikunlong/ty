@@ -23,11 +23,22 @@
 
       <div class="news-grid">
         <div class="news-card" v-for="news in newsList" :key="news.id" @click="openNewsModal(news)">
-          <h3 class="news-title">{{ news.news_title }}</h3>
-          <p class="news-summary">{{ news.news_summary }}</p>
-          <div class="news-footer">
-            <span class="platform">{{ news.publish_platform }}</span>
-            <span class="date">{{ news.publish_time }}</span>
+          <!-- 新增：新闻封面图展示 -->
+          <div class="news-img-box" v-if="news.news_img">
+            <img 
+              :src="news.news_img" 
+              alt="新闻封面" 
+              @error="(e) => (e.target as HTMLImageElement).style.display = 'none'"
+            />
+          </div>
+          
+          <div class="news-info">
+            <h3 class="news-title">{{ news.news_title }}</h3>
+            <p class="news-summary">{{ news.news_summary }}</p>
+            <div class="news-footer">
+              <span class="platform">{{ news.publish_platform }}</span>
+              <span class="date">{{ news.publish_time }}</span>
+            </div>
           </div>
         </div>
       </div>
@@ -59,9 +70,18 @@
           <span>来源：{{ selectedNews.publish_platform }}</span>
           <span>发布时间：{{ selectedNews.publish_time }}</span>
         </div>
+        
         <div class="modal-body">
+          <!-- 新增：弹框内的图片展示 -->
+          <img 
+            v-if="selectedNews.news_img" 
+            :src="selectedNews.news_img" 
+            class="modal-news-img" 
+            @error="(e) => (e.target as HTMLImageElement).style.display = 'none'"
+          />
           <p>{{ selectedNews.news_summary }}</p>
         </div>
+        
         <div class="modal-footer">
           <a :href="selectedNews.source_url" target="_blank" class="source-link">阅读原文链接 →</a>
         </div>
@@ -151,6 +171,7 @@ const closeModal = () => {
   margin: 0;
 }
 
+/* ================= 新闻列表卡片 ================= */
 .news-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
@@ -160,16 +181,41 @@ const closeModal = () => {
   background: white;
   border: 1px solid #e2e8f0;
   border-radius: 10px;
-  padding: 24px;
   cursor: pointer;
   transition: all 0.3s ease;
   display: flex;
   flex-direction: column;
+  overflow: hidden; /* 保证图片贴合圆角 */
 }
 .news-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 10px 20px -5px rgba(0,0,0,0.08);
   border-color: #bfdbfe;
+}
+
+/* 新增：新闻图片区域 */
+.news-img-box {
+  width: 100%;
+  height: 180px;
+  overflow: hidden;
+  background: #f1f5f9; /* 图片未加载时的占位底色 */
+}
+.news-img-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+.news-card:hover .news-img-box img {
+  transform: scale(1.05); /* 悬停时图片微微放大 */
+}
+
+/* 卡片内容区域 (原来卡片的 padding 移到了这里) */
+.news-info {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 }
 .news-title {
   font-size: 18px;
@@ -280,6 +326,7 @@ const closeModal = () => {
   color: #64748b;
   display: flex; align-items: center; justify-content: center;
   transition: all 0.2s;
+  z-index: 10;
 }
 .close-btn:hover { background: #e2e8f0; color: #0f172a; }
 .modal-title {
@@ -303,6 +350,18 @@ const closeModal = () => {
   color: #334155;
   line-height: 1.8;
 }
+
+/* 新增：弹框内的图片样式 */
+.modal-news-img {
+  width: 100%;
+  max-height: 350px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  display: block;
+  background: #f1f5f9;
+}
+
 .modal-footer {
   margin-top: 30px;
   text-align: right;
