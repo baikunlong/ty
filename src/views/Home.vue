@@ -9,9 +9,9 @@
           <span class="platform-name">重庆国际物流产教联合体</span>
         </div>
         <nav class="nav-links">
-          <a href="#news" @click.prevent="scrollTo('news')">政策新闻</a>
-          <a href="#supply" @click.prevent="scrollTo('supply')">供给信息</a>
-          <a href="#demand" @click.prevent="scrollTo('demand')">需求信息</a>
+          <a href="/news">政策新闻</a>
+          <a href="/supply-form">供给信息</a>
+          <a href="/demand-form">需求信息</a>
         </nav>
       </div>
     </header>
