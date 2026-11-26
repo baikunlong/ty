@@ -9,6 +9,7 @@
           <span class="platform-name">西部陆海新通道沿线产教供需对接平台</span>
         </div>
         <nav class="nav-links">
+          <router-link to="/CompanyList">企业汇总</router-link>
           <router-link to="/">返回首页</router-link>
         </nav>
       </div>
@@ -216,6 +217,7 @@ const getLogoUrl = (logoName: string) => {
 .school-logo { height: 32px; object-fit: contain; }
 .divider { color: rgba(255,255,255,0.3); }
 .platform-name { font-size: 18px; font-weight: 600; letter-spacing: 1px; }
+.nav-links { display: flex; gap: 32px; }
 .nav-links a { color: #cbd5e1; font-size: 15px; text-decoration: none; transition: 0.2s; }
 .nav-links a:hover { color: white; }
 
