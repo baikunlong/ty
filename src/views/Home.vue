@@ -8,12 +8,12 @@
           <span class="divider">|</span>
           <span class="platform-name">重庆国际物流产教联合体</span>
         </div>
+        <!-- 修改点 1：供给信息点击直接弹出弹框 -->
         <nav class="nav-links">
           <router-link to="/news">政策新闻</router-link>
-          <router-link to="/">供给信息</router-link>
+          <a href="#" @click.prevent="openSupplyModal">供给信息</a>
           <router-link to="/JobList">需求信息</router-link>
         </nav>
-
       </div>
     </header>
 
@@ -176,6 +176,13 @@
             <span>发布时间：{{ selectedNews.publish_time }}</span>
           </div>
           <div class="modal-body">
+            <!-- 修改点 2：新闻弹框内加入图片 -->
+            <img 
+              v-if="selectedNews.news_img" 
+              :src="selectedNews.news_img" 
+              class="modal-news-img" 
+              @error="(e) => (e.target as HTMLImageElement).style.display = 'none'"
+            />
             <p>{{ selectedNews.news_summary }}</p>
           </div>
           <div class="modal-footer">
@@ -325,7 +332,7 @@ import heroBg from '../assets/hero-bg.jpg'
 /** 首页每栏最多展示的条目数 */
 const LIST_LIMIT = 5
 
-// --- 二维码配置，这里替换成你实际的填报地址 ---
+// --- 二维码配置 ---
 const supplyUrl = ref('https://cgsxy.yujs.top/#/supply-form')
 const demandUrl = ref('https://cgsxy.yujs.top/#/demand-form')
 
@@ -817,6 +824,17 @@ ul, li { list-style: none; margin: 0; padding: 0; }
 .modal-footer { margin-top: 30px; text-align: right; }
 .source-link { color: #2563eb; font-weight: 500; font-size: 14px; }
 .source-link:hover { text-decoration: underline; }
+
+/* 新增：新闻弹框内图片样式 */
+.modal-news-img {
+  width: 100%;
+  max-height: 300px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  display: block;
+  background: #f1f5f9;
+}
 
 /* ================= 岗位详情弹框专属 ================= */
 .job-modal-header {
