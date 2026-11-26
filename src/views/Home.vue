@@ -9,10 +9,11 @@
           <span class="platform-name">重庆国际物流产教联合体</span>
         </div>
         <nav class="nav-links">
-          <a href="/news">政策新闻</a>
-          <a href="/supply-form">供给信息</a>
-          <a href="/demand-form">需求信息</a>
+          <router-link to="/news">政策新闻</router-link>
+          <router-link to="/">供给信息</router-link>
+          <router-link to="/JobList">需求信息</router-link>
         </nav>
+
       </div>
     </header>
 
@@ -325,8 +326,9 @@ import heroBg from '../assets/hero-bg.jpg'
 const LIST_LIMIT = 5
 
 // --- 二维码配置，这里替换成你实际的填报地址 ---
-const supplyUrl = ref('https://cgsxy.yujs.top/supply-form')
-const demandUrl = ref('https://cgsxy.yujs.top/demand-form')
+const supplyUrl = ref('https://cgsxy.yujs.top/#/supply-form')
+const demandUrl = ref('https://cgsxy.yujs.top/#/demand-form')
+
 const supplyQrImg = ref('')
 const demandQrImg = ref('')
 

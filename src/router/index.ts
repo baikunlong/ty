@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHashHistory } from 'vue-router'
 import Home from '../views/Home.vue'
 import JobDetail from '../views/JobDetail.vue'
 import CompanyList from '../views/CompanyList.vue'
@@ -9,7 +9,7 @@ import SupplyForm from '../views/SupplyForm.vue'
 import DemandForm from '../views/DemandForm.vue'
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
+  history: createWebHashHistory(import.meta.env.BASE_URL),
   routes: [
     { path: '/', name: 'Home', component: Home },
     { path: '/news', name: 'NewsList', component: NewsList },
